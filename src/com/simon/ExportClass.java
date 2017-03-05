@@ -50,6 +50,11 @@ public class ExportClass {
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             System.out.println("请输入项目名称:");
             String projectName = reader.readLine();
+            if("".equals(projectName) || null == projectName) {
+                projectName = "beefinc1.0";
+            }else if(projectName.endsWith(filesp)) {
+                projectName.substring(0, projectName.length() - 1);
+            }
             
             System.out.println("请输入项目路径:");
             String srcPath = reader.readLine();
@@ -106,13 +111,14 @@ public class ExportClass {
                 des = srcRoot + filesp + "webapp" + filesp + "WEB-INF" + filesp + "classes" + fileName.substring(fileName.indexOf(filesp + "resources" + filesp) + 10);
             } else if (fileName.indexOf(filesp + "webapp" + filesp) != -1) {
                 src = projectRoot + filesp + "src" + fileName;
-                des = srcRoot + filesp + "webapp" + fileName.substring(fileName.lastIndexOf(filesp));
+                des = srcRoot + filesp + "webapp" + fileName.substring(fileName.indexOf(filesp + "webapp" + filesp) + 7);
             } else {
                 src = projectRoot + filesp + "target" + filesp + "classes" + fileName;
                 des = srcRoot + filesp + "webapp" + filesp + "WEB-INF" + filesp + "classes" + fileName;
             }
             copyFile(src, des);
         }
+        
         System.out.println(String.format(">>> 文件复制完成，共复制【%s】个文件  <<<", copyNum));
         System.out.println();
     }
@@ -185,7 +191,7 @@ public class ExportClass {
                     fs.write(buffer, 0, byteread);
                 }
                 inStream.close();
-                System.out.println(String.format("文件【%s】 复制大小:%s KB", oldPath, (double) bytesum / 1024));
+                System.out.println(String.format("复制【%s】 >>>【%s】大小:%s KB", oldPath, newPath, (double) bytesum / 1024));
                 copyNum++ ;
             } else {
                 System.out.println(String.format("文件【%s】不存在！！！", oldPath));
